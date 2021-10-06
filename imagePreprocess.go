@@ -7,6 +7,10 @@ import (
 	"os"
 )
 
+/*
+Read the single file and transform to [][]float64 pixel and normalize to it in [0-1]
+*/
+
 func ReadSingleFile(fileDir string) [][]float64 {
 	f, err := os.Open(fileDir)
 	if err != nil {
@@ -21,7 +25,7 @@ func ReadSingleFile(fileDir string) [][]float64 {
 
 	size := img.Bounds().Size()
 	var pixels [][]float64
-	//put pixels into two three two dimensional array
+	//put pixels into two three two-dimensional array
 	for i := 0; i < size.X; i++ {
 		var y []float64
 		for j := 0; j < size.Y; j++ {
@@ -31,7 +35,7 @@ func ReadSingleFile(fileDir string) [][]float64 {
 		}
 		pixels = append(pixels, y)
 	}
-	// pixel array is a
+	// pixel array is a normalized val between 0-1
 	return pixels
 }
 
@@ -39,15 +43,24 @@ func ReadSingleFile(fileDir string) [][]float64 {
 [][][]float64
 */
 
-func ReadMultipleFiles(folderDir string) {
+func ReadMultipleFiles(folderDir string) ([][][]float64, []string) {
 	files, _ := ioutil.ReadDir(folderDir)
 	X := make([][][]float64, 0)
+	Y := make([]string, 0)
 	for _, f := range files {
-		fmt.Println(f.Name())
+		y := ObtainLabels(f.Name())
+		Y = append(Y, y)
 		fig := ReadSingleFile(folderDir + "/" + f.Name())
 		X = append(X, fig)
 	}
-	fmt.Println(len(X))
-	fmt.Println(len(X[0]))
-	fmt.Println(len(X[0][0]))
+	//fmt.Println(len(X))
+	//fmt.Println(len(X[0]))
+	//fmt.Println(len(X[0][0]))
+	fmt.Println(Y)
+	fmt.Println(X)
+	return X, Y
+}
+
+func ObtainLabels(foldName string) string {
+	return foldName[:1]
 }
