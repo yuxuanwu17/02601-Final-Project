@@ -18,32 +18,21 @@ func main() {
 		panic(err)
 	}
 
-	//fmt.Println(img.At(1,1))
-	//fmt.Println(reflect.TypeOf(img.At(1,1)))
-	//fmt.Println(img.At(1,1).RGBA())
-	//fmt.Println(img.At(1,2).RGBA())
-
 	size := img.Bounds().Size()
 	fmt.Println(size)
-	var pixels [][]int32
+	var pixels [][]float64
 	//put pixels into two three two dimensional array
 	for i := 0; i < size.X; i++ {
-		var y []int32
+		var y []float64
 		for j := 0; j < size.Y; j++ {
 			r, g, b, _ := img.At(i, j).RGBA()
 			lum := 0.299*float64(r) + 0.587*float64(g) + 0.114*float64(b)
-			//fmt.Println(img.At(i,j))
-			//fmt.Println("=====================")
-			//fmt.Println(int32(lum/256))
-			//
-			//fmt.Println("=====================")
-			//fmt.Println()
-			y = append(y, int32(lum/256))
+			y = append(y, float64(int32(lum/256))/255)
 		}
 		pixels = append(pixels, y)
 	}
-
+	// pixel array is a
+	fmt.Println(len(pixels[0]))
+	fmt.Println(len(pixels))
 	fmt.Println(pixels)
-	//fmt.Println(pixels[0])
-	//fmt.Println(reflect.TypeOf(int32(pixels[0])))
 }
