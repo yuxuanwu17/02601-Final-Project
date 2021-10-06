@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"image"
 	"image/jpeg"
 	"io/ioutil"
 	"os"
@@ -11,7 +11,7 @@ import (
 Read the single file and transform to [][]float64 pixel and normalize to it in [0-1]
 */
 
-func ReadSingleFile(fileDir string) [][]float64 {
+func ReadSingleFile(fileDir string) []float64 {
 	f, err := os.Open(fileDir)
 	if err != nil {
 		panic(err)
@@ -23,29 +23,18 @@ func ReadSingleFile(fileDir string) [][]float64 {
 		panic(err)
 	}
 
-	size := img.Bounds().Size()
-	var pixels [][]float64
-	//put pixels into two three two-dimensional array
-	for i := 0; i < size.X; i++ {
-		var y []float64
-		for j := 0; j < size.Y; j++ {
-			r, g, b, _ := img.At(i, j).RGBA()
-			lum := 0.299*float64(r) + 0.587*float64(g) + 0.114*float64(b)
-			y = append(y, float64(int32(lum/256))/255)
-		}
-		pixels = append(pixels, y)
-	}
-	// pixel array is a normalized val between 0-1
+	pixels := imgToGrey(img)
 	return pixels
 }
 
 /*
-[][][]float64
+Input: folder direction
+Output: X [][][]float64, Y []string
 */
 
-func ReadMultipleFiles(folderDir string) ([][][]float64, []string) {
+func ReadMultipleFiles(folderDir string) ([][]float64, []string) {
 	files, _ := ioutil.ReadDir(folderDir)
-	X := make([][][]float64, 0)
+	X := make([][]float64, 0)
 	Y := make([]string, 0)
 	for _, f := range files {
 		y := ObtainLabels(f.Name())
@@ -56,11 +45,30 @@ func ReadMultipleFiles(folderDir string) ([][][]float64, []string) {
 	//fmt.Println(len(X))
 	//fmt.Println(len(X[0]))
 	//fmt.Println(len(X[0][0]))
-	fmt.Println(Y)
-	fmt.Println(X)
+	//fmt.Println(Y)
+	//fmt.Println(X)
 	return X, Y
 }
 
 func ObtainLabels(foldName string) string {
 	return foldName[:1]
+}
+
+func imgToGrey(img image.Image) []float64 {
+	bounds := img.Bounds()
+	gray := image.NewGray(bounds)
+
+	for x := 0; x < bounds.Max.X; x++ {
+		for y := 0; y < bounds.Max.Y; y++ {
+			var rgba = img.At(x, y)
+			gray.Set(x, y, rgba)
+		}
+	}
+	// make a pixel array
+	pixels := make([]float64, len(gray.Pix))
+	// populate the pixel array and divide by 255 to normalize the data (pixels[i] = (float64(255-gray.Pix[i]) / 255.0 * 0.99) + 0.01)
+	for i := 0; i < len(gray.Pix); i++ {
+		pixels[i] = float64(gray.Pix[i]) / 255.0
+	}
+	return pixels
 }
