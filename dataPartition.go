@@ -9,7 +9,7 @@ import (
 This would separate the X and Y value into training (80%) and testing data (20%)
 */
 
-func DataPartition(X [][]float64, Y []string, ratio float64) ([][]float64, [][]float64, []string, []string) {
+func DataPartition(X [][]float64, Y []float64, ratio float64) ([][]float64, [][]float64, []float64, []float64) {
 
 	allDataNum := len(X)
 	trainNum := int(float64(allDataNum) * ratio)
@@ -28,8 +28,8 @@ func DataPartition(X [][]float64, Y []string, ratio float64) ([][]float64, [][]f
 
 	X_train := make([][]float64, 0)
 	X_test := make([][]float64, 0)
-	y_train := make([]string, 0)
-	y_test := make([]string, 0)
+	y_train := make([]float64, 0)
+	y_test := make([]float64, 0)
 
 	for _, val := range trainIndex {
 		X_train = append(X_train, X[val])

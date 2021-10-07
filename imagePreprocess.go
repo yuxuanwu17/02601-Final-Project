@@ -32,12 +32,13 @@ Input: folder direction
 Output: X [][][]float64, Y []string
 */
 
-func ReadMultipleFiles(folderDir string) ([][]float64, []string) {
+func ReadMultipleFiles(folderDir string) ([][]float64, []float64) {
 	files, _ := ioutil.ReadDir(folderDir)
 	X := make([][]float64, 0)
-	Y := make([]string, 0)
+	Y := make([]float64, 0)
 	for _, f := range files {
-		y := ObtainLabels(f.Name())
+		char := f.Name()[:1]
+		y := OneHotEncoding(char)
 		Y = append(Y, y)
 		fig := ReadSingleFile(folderDir + "/" + f.Name())
 		X = append(X, fig)
@@ -50,9 +51,91 @@ func ReadMultipleFiles(folderDir string) ([][]float64, []string) {
 	return X, Y
 }
 
-func ObtainLabels(foldName string) string {
-	return foldName[:1]
+/*
+obtain the label from given file name
+*/
+
+func OneHotEncoding(char string) float64 {
+	var y float64
+	if char == "A" {
+		y = 1.0
+	}
+	if char == "B" {
+		y = 2.0
+	}
+	if char == "C" {
+		y = 3.0
+	}
+	if char == "D" {
+		y = 4.0
+	}
+	if char == "E" {
+		y = 5.0
+	}
+	if char == "F" {
+		y = 6.0
+	}
+	if char == "G" {
+		y = 7.0
+	}
+	if char == "H" {
+		y = 8.0
+	}
+	if char == "J" {
+		y = 9.0
+	}
+	if char == "K" {
+		y = 10.0
+	}
+	if char == "L" {
+		y = 11.0
+	}
+	if char == "M" {
+		y = 12.0
+	}
+	if char == "N" {
+		y = 13.0
+	}
+	if char == "P" {
+		y = 14.0
+	}
+	if char == "Q" {
+		y = 15.0
+	}
+	if char == "R" {
+		y = 16.0
+	}
+	if char == "S" {
+		y = 17.0
+	}
+	if char == "T" {
+		y = 18.0
+	}
+	if char == "U" {
+		y = 19.0
+	}
+	if char == "V" {
+		y = 20.0
+	}
+	if char == "W" {
+		y = 21.0
+	}
+	if char == "X" {
+		y = 22.0
+	}
+	if char == "Y" {
+		y = 23.0
+	}
+	if char == "Z" {
+		y = 24.0
+	}
+
+	return y
 }
+
+/*
+image convert to the grey image and normalize the image by dividing 255
+*/
 
 func imgToGrey(img image.Image) []float64 {
 	bounds := img.Bounds()
