@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"image"
 	"image/jpeg"
 	"io/ioutil"
@@ -32,10 +33,10 @@ Input: folder direction
 Output: X [][][]float64, Y []string
 */
 
-func ReadMultipleFiles(folderDir string) ([][]float64, []float64) {
+func ReadMultipleFiles(folderDir string) ([][]float64, [][]int) {
 	files, _ := ioutil.ReadDir(folderDir)
 	X := make([][]float64, 0)
-	Y := make([]float64, 0)
+	Y := make([][]int, 0)
 	for _, f := range files {
 		char := f.Name()[:1]
 		y := OneHotEncoding(char)
@@ -55,82 +56,83 @@ func ReadMultipleFiles(folderDir string) ([][]float64, []float64) {
 obtain the label from given file name
 */
 
-func OneHotEncoding(char string) float64 {
-	var y float64
+func OneHotEncoding(char string) []int {
+	singleLabel := make([]int, 24)
 	if char == "A" {
-		y = 1.0
+		singleLabel[0] = 1
 	}
 	if char == "B" {
-		y = 2.0
+		singleLabel[1] = 1
 	}
 	if char == "C" {
-		y = 3.0
+		singleLabel[2] = 1
 	}
 	if char == "D" {
-		y = 4.0
+		singleLabel[3] = 1
 	}
 	if char == "E" {
-		y = 5.0
+		singleLabel[4] = 1
 	}
 	if char == "F" {
-		y = 6.0
+		singleLabel[5] = 1
 	}
 	if char == "G" {
-		y = 7.0
+		singleLabel[6] = 1
 	}
 	if char == "H" {
-		y = 8.0
+		singleLabel[7] = 1
 	}
 	if char == "J" {
-		y = 9.0
+		singleLabel[8] = 1
 	}
 	if char == "K" {
-		y = 10.0
+		singleLabel[9] = 1
 	}
 	if char == "L" {
-		y = 11.0
+		singleLabel[10] = 1
 	}
 	if char == "M" {
-		y = 12.0
+		singleLabel[11] = 1
 	}
 	if char == "N" {
-		y = 13.0
+		singleLabel[12] = 1
 	}
 	if char == "P" {
-		y = 14.0
+		singleLabel[13] = 1
 	}
 	if char == "Q" {
-		y = 15.0
+		singleLabel[14] = 1
 	}
 	if char == "R" {
-		y = 16.0
+		singleLabel[15] = 1
 	}
 	if char == "S" {
-		y = 17.0
+		singleLabel[16] = 1
 	}
 	if char == "T" {
-		y = 18.0
+		singleLabel[17] = 1
 	}
 	if char == "U" {
-		y = 19.0
+		singleLabel[18] = 1
 	}
 	if char == "V" {
-		y = 20.0
+		singleLabel[19] = 1
 	}
 	if char == "W" {
-		y = 21.0
+		singleLabel[20] = 1
 	}
 	if char == "X" {
-		y = 22.0
+		singleLabel[21] = 1
 	}
 	if char == "Y" {
-		y = 23.0
+		singleLabel[22] = 1
 	}
 	if char == "Z" {
-		y = 24.0
+		singleLabel[23] = 1
 	}
+	fmt.Println(singleLabel)
 
-	return y
+	return singleLabel
 }
 
 /*
