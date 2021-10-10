@@ -156,7 +156,7 @@ def train(x_train, y_train):
 
 def load_model():
     model = keras.models.load_model("model/my_model")
-
+    model.summary()
     y_pred = model.predict(x_test)
 
     pred_class = np.argmax(y_pred, axis=1)
@@ -177,4 +177,6 @@ if __name__ == '__main__':
     x_train, x_test, y_train, y_test = train_test_split(X, Y, test_size=0.2)
     y_train = ind2vec(y_train, 24)
     y_test = ind2vec(y_test, 24)
+    print(x_train.shape)
+    # train(x_train,y_train)
     load_model()

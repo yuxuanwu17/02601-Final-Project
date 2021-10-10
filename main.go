@@ -2,7 +2,8 @@ package main
 
 import (
 	"fmt"
-	"math/rand"
+	tf "github.com/galeone/tensorflow/tensorflow/go"
+	tg "github.com/galeone/tfgo"
 )
 
 /*
@@ -25,28 +26,36 @@ test the successful install of the golang tensorflow
 //	fmt.Println("Z == A", Z == A) // ==> false
 //}
 
-func main() {
-	// set the random seed to 0
-	rand.Seed(0)
-
-	// create the XOR representation patter to train the network
-	/*
-		X's size is 2400*1152
-		Y's size is 2400*24
-	*/
-
-	_, Y := ReadMultipleFiles("ass2_processed_data")
-	fmt.Println(Y)
-	fmt.Println(len(Y))
-	fmt.Println(len(Y[0]))
-	// ReadMultipleFiles("ass2_processed_data")
-	//DataPartition(X, Y, 0.99)
-	//inputTrain, _, _, _, _, _ := DataPartition(X, Y, 0.99)
-	//_, _, _, x_test, _, y_test := DataPartition(X, Y, 0.99)
-
-}
+//func main() {
+//	// set the random seed to 0
+//	rand.Seed(0)
+//
+//	// create the XOR representation patter to train the network
+//	/*
+//		X's size is 2400*1152
+//		Y's size is 2400*24
+//	*/
+//
+//	_, Y := ReadMultipleFiles("ass2_processed_data")
+//	fmt.Println(Y)
+//	fmt.Println(len(Y))
+//	fmt.Println(len(Y[0]))
+//	//DataPartition(X, Y, 0.99)
+//	//inputTrain, _, _, _, _, _ := DataPartition(X, Y, 0.99)
+//	//_, _, _, x_test, _, y_test := DataPartition(X, Y, 0.99)
+//
+//}
 
 /**/
-//func main() {
-//	OneHotEncoding("G")
-//}
+func main() {
+	model := tg.LoadModel("model/my_model", []string{"serve"}, nil)
+	fakeInput, _ := tf.NewTensor([1][1920][1]float32{})
+	results := model.Exec([]tf.Output{
+		model.Op("StatefulPartitionedCall", 0),
+	}, map[tf.Output]*tf.Tensor{
+		model.Op("serving_default_inputs_input", 0): fakeInput,
+	})
+	fmt.Println(results)
+	//fmt.Println(model)
+	//OneHotEncoding("G")
+}
