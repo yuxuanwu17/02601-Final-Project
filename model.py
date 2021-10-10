@@ -2,9 +2,13 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import numpy as np
 import os
+
+import sklearn
+from numpy import argmax
+from sklearn.metrics import ConfusionMatrixDisplay, confusion_matrix
 from sklearn.model_selection import train_test_split
-import PIL
 import tensorflow as tf
+from tensorflow.python.keras.metrics import Metric
 from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
@@ -115,7 +119,7 @@ def onehotEncoding(char):
     return y
 
 
-def model():
+def get_model():
     model = Sequential([
         Dense(512, activation='relu', input_dim=1152),
         Dense(128, activation='relu', input_dim=1152),
@@ -135,10 +139,41 @@ def ind2vec(ind, N=None):
     return (np.arange(N) == ind[:, None]).astype(int)
 
 
+def vec2ind(vec):
+    y = []
+    for v in vec:
+        label = argmax(v)
+        y.append(label)
+
+    return np.array(y)
+
+
 def train(x_train, y_train):
-    model().fit(x_train, y_train, epochs=250)
-    _, test_loss = model().evaluate(x_test, y_test)
+    model = get_model()
+    model.fit(x_train, y_train, epochs=250)
+    model.save('model/my_model')
+    _, test_loss = model.evaluate(x_test, y_test)
     print(test_loss)
+
+
+def load_model():
+    model = keras.models.load_model("model/my_model")
+
+    y_pred = model.predict(x_test)
+
+    matrix = sklearn.metrics.confusion_matrix(y_test, np.rint(y_pred))
+    print(matrix)
+
+
+    # test_loss, test_acc = model.evaluate(x_test, y_test)
+    # print(test_loss)
+    # print(test_acc)
+
+    # label = np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23])
+    # print(label)
+    # cm = confusion_matrix(y_test, predictions, label)
+    # disp = ConfusionMatrixDisplay(confusion_matrix=cm)
+    # disp.plot()
 
 
 if __name__ == '__main__':
@@ -149,4 +184,9 @@ if __name__ == '__main__':
     y_train = ind2vec(y_train, 24)
     y_test = ind2vec(y_test, 24)
 
-    train(x_train, y_train)
+    # print(y_test)
+    # print(vec2ind(y_test))
+    # print(vec2ind(y_test).shape)
+    # print(argmax(y_test))
+    # train(x_train, y_train)
+    load_model()
