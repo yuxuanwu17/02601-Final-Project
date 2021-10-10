@@ -8,13 +8,9 @@ from numpy import argmax
 from sklearn.metrics import ConfusionMatrixDisplay, confusion_matrix
 from sklearn.model_selection import train_test_split
 import tensorflow as tf
-from tensorflow.python.keras.metrics import Metric
 from tensorflow import keras
-from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
 from tensorflow_core.python.keras.layers import Dense, Activation
-from tensorflow_core.python.keras.optimizers import RMSprop
-from tensorflow_core.python.keras.utils import np_utils
 
 data = []
 target = []
@@ -173,19 +169,6 @@ def load_model():
     plt.show()
     print(confusion_matrix)
 
-    # matrix = sklearn.metrics.confusion_matrix(y_test, np.rint(y_pred))
-    # print(matrix)
-
-    # test_loss, test_acc = model.evaluate(x_test, y_test)
-    # print(test_loss)
-    # print(test_acc)
-
-    # label = np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23])
-    # print(label)
-    # cm = confusion_matrix(y_test, predictions, label)
-    # disp = ConfusionMatrixDisplay(confusion_matrix=cm)
-    # disp.plot()
-
 
 if __name__ == '__main__':
     readMultipleFile()
@@ -194,10 +177,4 @@ if __name__ == '__main__':
     x_train, x_test, y_train, y_test = train_test_split(X, Y, test_size=0.2)
     y_train = ind2vec(y_train, 24)
     y_test = ind2vec(y_test, 24)
-
-    # print(y_test)
-    # print(vec2ind(y_test))
-    # print(vec2ind(y_test).shape)
-    # print(argmax(y_test))
-    # train(x_train, y_train)
     load_model()
