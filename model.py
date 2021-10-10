@@ -120,15 +120,17 @@ def onehotEncoding(char):
 
 
 def get_model():
+    #  regression model, cannot use accuracy as the matrix
     model = Sequential([
         Dense(512, activation='relu', input_dim=1152),
         Dense(128, activation='relu', input_dim=1152),
         Dense(24, activation='softmax')
     ])
     # 定义优化器
-    model.compile(optimizer='sgd',
-                  loss='mse',
-                  metrics=['accuracy'])
+    model.compile(
+        optimizer='sgd',
+        loss='mse',
+        metrics=[tf.keras.metrics.MeanSquaredError()])
     return model
 
 
@@ -161,9 +163,18 @@ def load_model():
 
     y_pred = model.predict(x_test)
 
-    matrix = sklearn.metrics.confusion_matrix(y_test, np.rint(y_pred))
-    print(matrix)
+    pred_class = np.argmax(y_pred, axis=1)
+    y_class = np.argmax(y_test, axis=1)
 
+    confusion_matrix = sklearn.metrics.confusion_matrix(y_true=y_class, y_pred=pred_class)  # shape=(12, 12)
+    disp = ConfusionMatrixDisplay(confusion_matrix=confusion_matrix)
+    disp.plot()
+    plt.savefig('plot/python_cm.png')
+    plt.show()
+    print(confusion_matrix)
+
+    # matrix = sklearn.metrics.confusion_matrix(y_test, np.rint(y_pred))
+    # print(matrix)
 
     # test_loss, test_acc = model.evaluate(x_test, y_test)
     # print(test_loss)
