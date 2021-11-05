@@ -48,8 +48,9 @@ test the successful install of the golang tensorflow
 
 /**/
 func main() {
-	model := tg.LoadModel("model/my_model", []string{"serve"}, nil)
-	fakeInput, _ := tf.NewTensor([1][1920][1]float32{})
+	model := tg.LoadModel("model/test", []string{"serve"}, nil)
+
+	fakeInput, _ := tf.NewTensor([1][1][1920]float64{})
 	results := model.Exec([]tf.Output{
 		model.Op("StatefulPartitionedCall", 0),
 	}, map[tf.Output]*tf.Tensor{

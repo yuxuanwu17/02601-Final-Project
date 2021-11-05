@@ -1,16 +1,16 @@
-import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
-import numpy as np
 import os
 
+import matplotlib.image as mpimg
+import matplotlib.pyplot as plt
+import numpy as np
 import sklearn
-from numpy import argmax
-from sklearn.metrics import ConfusionMatrixDisplay, confusion_matrix
-from sklearn.model_selection import train_test_split
 import tensorflow as tf
+from numpy import argmax
+from sklearn.metrics import ConfusionMatrixDisplay
+from sklearn.model_selection import train_test_split
 from tensorflow import keras
 from tensorflow.keras.models import Sequential
-from tensorflow_core.python.keras.layers import Dense, Activation
+from tensorflow_core.python.keras.layers import Dense
 
 data = []
 target = []
@@ -117,6 +117,7 @@ def onehotEncoding(char):
 
 def get_model():
     #  regression model, cannot use accuracy as the matrix
+    #  input shape: 1*1152 , x_train[1920,1152]
     model = Sequential([
         Dense(512, activation='relu', input_dim=1152),
         Dense(128, activation='relu', input_dim=1152),
@@ -128,6 +129,15 @@ def get_model():
         loss='mse',
         metrics=[tf.keras.metrics.MeanSquaredError()])
     return model
+
+
+def model4go():
+    model = Sequential([
+        Dense(512, activation='relu', input_shape=(1, 1152)),
+        Dense(128, activation='relu', input_shape=(1, 1152)),
+        Dense(24, activation='softmax')
+    ])
+    tf.saved_model.save(model, "model/test")
 
 
 def ind2vec(ind, N=None):
@@ -148,10 +158,11 @@ def vec2ind(vec):
 
 def train(x_train, y_train):
     model = get_model()
-    model.fit(x_train, y_train, epochs=250)
-    model.save('model/my_model')
+    tf.saved_model.save(model, "model/mymodel")
+    model.fit(x_train, y_train, epochs=5)
+    # tf.saved_model.save(model, "model/mymodel")
+    # model.save('model/my_model')
     _, test_loss = model.evaluate(x_test, y_test)
-    print(test_loss)
 
 
 def load_model():
@@ -178,5 +189,7 @@ if __name__ == '__main__':
     y_train = ind2vec(y_train, 24)
     y_test = ind2vec(y_test, 24)
     print(x_train.shape)
-    # train(x_train,y_train)
+    train(x_train, y_train)
     load_model()
+
+    # model4go()
