@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"image"
 	"image/jpeg"
 	"io/ioutil"
@@ -33,10 +32,10 @@ Input: folder direction
 Output: X [][][]float64, Y []string
 */
 
-func ReadMultipleFiles(folderDir string) ([][]float64, [][]int) {
+func ReadMultipleFiles(folderDir string) ([][]float64, [][]float64) {
 	files, _ := ioutil.ReadDir(folderDir)
 	X := make([][]float64, 0)
-	Y := make([][]int, 0)
+	Y := make([][]float64, 0)
 	for _, f := range files {
 		char := f.Name()[:1]
 		y := OneHotEncoding(char)
@@ -44,11 +43,6 @@ func ReadMultipleFiles(folderDir string) ([][]float64, [][]int) {
 		fig := ReadSingleFile(folderDir + "/" + f.Name())
 		X = append(X, fig)
 	}
-	//fmt.Println(len(X))
-	//fmt.Println(len(X[0]))
-	//fmt.Println(len(X[0][0]))
-	//fmt.Println(Y)
-	//fmt.Println(X)
 	return X, Y
 }
 
@@ -56,8 +50,8 @@ func ReadMultipleFiles(folderDir string) ([][]float64, [][]int) {
 obtain the label from given file name
 */
 
-func OneHotEncoding(char string) []int {
-	singleLabel := make([]int, 24)
+func OneHotEncoding(char string) []float64 {
+	singleLabel := make([]float64, 24)
 	if char == "A" {
 		singleLabel[0] = 1
 	}
@@ -130,7 +124,7 @@ func OneHotEncoding(char string) []int {
 	if char == "Z" {
 		singleLabel[23] = 1
 	}
-	fmt.Println(singleLabel)
+	//fmt.Println(singleLabel)
 
 	return singleLabel
 }

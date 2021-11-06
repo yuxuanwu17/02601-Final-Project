@@ -23,7 +23,7 @@ def readSingleImg(dir):
 
 
 def readMultipleFile():
-    files = os.listdir('ass2_processed_data')
+    files = os.listdir('../ass2_processed_data')
     for f in files:
         img = readSingleImg(f)
         label = labelExtraction(f)
@@ -137,7 +137,7 @@ def model4go():
         Dense(128, activation='relu', input_shape=(1, 1152)),
         Dense(24, activation='softmax')
     ])
-    tf.saved_model.save(model, "model/test")
+    tf.saved_model.save(model, "../model/test")
 
 
 def ind2vec(ind, N=None):
@@ -158,7 +158,7 @@ def vec2ind(vec):
 
 def train(x_train, y_train):
     model = get_model()
-    tf.saved_model.save(model, "model/mymodel")
+    tf.saved_model.save(model, "../model/mymodel")
     model.fit(x_train, y_train, epochs=5)
     # tf.saved_model.save(model, "model/mymodel")
     # model.save('model/my_model')
