@@ -34,12 +34,13 @@ func (net *Network) Train(input []float64, target []float64) {
 	finalOutputMat := net.FeedForward(input)
 
 	// error calculation
-	net.ErrorCalculation(finalOutputMat, target)
+	outputError, hiddenError := net.ErrorCalculation(finalOutputMat, target)
 
 	// backpropagation
 
 }
 
+// FeedForward would conduct the feedforward, return the finalOutputMat, ready to compare Error with actual target
 func (net *Network) FeedForward(input []float64) mat.Matrix {
 	inputMat := mat.NewDense(len(input), 1, input)
 	hiddenInputMat := dot(net.hiddenWeights, inputMat)
@@ -49,7 +50,10 @@ func (net *Network) FeedForward(input []float64) mat.Matrix {
 	return finalOutputMat
 }
 
-func (net *Network) ErrorCalculation(finalOutputMat mat.Matrix, target []float64) {
-	//targetMat := mat.NewDense(len(target), 1, target)
-	//outputError :=
+// ErrorCalculation would return the error in each layer
+func (net *Network) ErrorCalculation(finalOutputMat mat.Matrix, target []float64) (mat.Matrix, mat.Matrix) {
+	targetMat := mat.NewDense(len(target), 1, target)
+	outputError := subtract(targetMat, finalOutputMat)
+	hiddenError := dot(net.outputWeights.T(), outputError)
+	return outputError, hiddenError
 }
