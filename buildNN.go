@@ -31,23 +31,23 @@ func CreateNetwork(input, hidden, output int, lr float64) Network {
 
 func (net *Network) Train(input []float64, target []float64) {
 	// feedforward network
-	finalOutputMat := net.FeedForward(input)
+	finalOutputMat, hiddenOutputMat, inputMat := net.FeedForward(input)
 
 	// error calculation
 	outputError, hiddenError := net.ErrorCalculation(finalOutputMat, target)
 
 	// backpropagation
-
+	net.BackPropagation(outputError, hiddenError, finalOutputMat, hiddenOutputMat, inputMat)
 }
 
 // FeedForward would conduct the feedforward, return the finalOutputMat, ready to compare Error with actual target
-func (net *Network) FeedForward(input []float64) mat.Matrix {
+func (net *Network) FeedForward(input []float64) (mat.Matrix, mat.Matrix, mat.Matrix) {
 	inputMat := mat.NewDense(len(input), 1, input)
 	hiddenInputMat := dot(net.hiddenWeights, inputMat)
 	hiddenOutputMat := applySigmoid(sigmoid, hiddenInputMat)
 	finalInputMat := dot(net.outputWeights, hiddenOutputMat)
 	finalOutputMat := applySigmoid(sigmoid, finalInputMat)
-	return finalOutputMat
+	return finalOutputMat, hiddenOutputMat, inputMat
 }
 
 // ErrorCalculation would return the error in each layer
@@ -56,4 +56,24 @@ func (net *Network) ErrorCalculation(finalOutputMat mat.Matrix, target []float64
 	outputError := subtract(targetMat, finalOutputMat)
 	hiddenError := dot(net.outputWeights.T(), outputError)
 	return outputError, hiddenError
+}
+
+func (net *Network) BackPropagation(outputError, hiddenError, finalOutputMat, hiddenOutputMat, inputMat mat.Matrix) {
+	// part 1: the target matrix - output matrix
+	// outputError
+	// part 2: the derivative of the final output with respect to the summation of k
+	d_ok_dSumk := sigmoidDerivative(finalOutputMat)
+	d_ok_dSumk_hidden := sigmoidDerivative(hiddenOutputMat)
+
+	// part 1 element multiply of part 2
+	part12 := multiply(outputError, d_ok_dSumk)
+	part12_hidden := multiply(hiddenError, d_ok_dSumk_hidden)
+	// part 3: the gradient of summation with respect to the output weight wjk, which is also the input
+	// dot product of the transpose of the previous output, necessary for multiplying layers
+	deltaWeights := dot(part12, hiddenOutputMat.T())
+	deltaWeights_hidden := dot(part12_hidden, inputMat)
+
+	net.outputWeights = add(net.outputWeights, scale(net.lr, deltaWeights)).(*mat.Dense)
+
+	net.hiddenWeights = add(net.hiddenWeights, scale(net.lr, deltaWeights_hidden)).(*mat.Dense)
 }

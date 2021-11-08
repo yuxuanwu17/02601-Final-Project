@@ -47,6 +47,34 @@ func sigmoid(r, c int, x float64) float64 {
 	return 1.0 / (1 + math.Exp(-1*x))
 }
 
-func sigmoidDerivative() {
+func multiply(m, n mat.Matrix) mat.Matrix {
+	r, c := m.Dims()
+	o := mat.NewDense(r, c, nil)
+	o.MulElem(m, n)
+	return o
+}
 
+func scale(s float64, m mat.Matrix) mat.Matrix {
+	r, c := m.Dims()
+	o := mat.NewDense(r, c, nil)
+	o.Scale(s, m)
+	return o
+}
+
+func add(m, n mat.Matrix) mat.Matrix {
+	r, c := m.Dims()
+	o := mat.NewDense(r, c, nil)
+	o.Add(m, n)
+	return o
+}
+
+func sigmoidDerivative(m mat.Matrix) mat.Matrix {
+	rows, _ := m.Dims()
+	o := make([]float64, rows)
+	// create a one matrix
+	for i := range o {
+		o[i] = 1
+	}
+	ones := mat.NewDense(rows, 1, o)
+	return multiply(m, subtract(ones, m)) // m * (1 - m)
 }
