@@ -71,7 +71,7 @@ func (net *Network) BackPropagation(outputError, hiddenError, finalOutputMat, hi
 	// part 3: the gradient of summation with respect to the output weight wjk, which is also the input
 	// dot product of the transpose of the previous output, necessary for multiplying layers
 	deltaWeights := dot(part12, hiddenOutputMat.T())
-	deltaWeights_hidden := dot(part12_hidden, inputMat)
+	deltaWeights_hidden := dot(part12_hidden, inputMat.T())
 
 	net.outputWeights = add(net.outputWeights, scale(net.lr, deltaWeights)).(*mat.Dense)
 

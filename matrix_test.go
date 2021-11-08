@@ -57,7 +57,7 @@ func TestNetwork_FeedForward(t *testing.T) {
 	net := CreateNetwork(2, 2, 1, 0.1)
 	net.hiddenWeights = mat.NewDense(2, 2, []float64{0.0, 1.0, 0.0, 1.0})
 	net.outputWeights = mat.NewDense(1, 2, []float64{0.0, 1.0})
-	output := net.FeedForward([]float64{2, 3})
+	output, _, _ := net.FeedForward([]float64{2, 3})
 	fc := mat.Formatted(output, mat.Prefix("    "), mat.Squeeze())
 	fmt.Printf("c = %v", fc)
 }
