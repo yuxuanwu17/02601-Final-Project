@@ -12,21 +12,24 @@ func ImageTrain(net *Network, X, Y [][]float64) {
 }
 
 func ImagePredict(net *Network, X_test, y_test [][]float64) {
-	outputs := net.Predict(X_test[101])
-	//fmt.Println(outputs)
-	best := 0
-	highest := 0.0
 	score := 0
-	for i := 0; i < net.outputs; i++ {
-		if outputs.At(i, 0) > highest {
-			best = i
-			highest = outputs.At(i, 0)
+	for i := 0; i < len(X_test); i++ {
+		outputs := net.Predict(X_test[i])
+		best := 0
+		highest := 0.0
+		for num := 0; num < net.outputs; num++ {
+			if outputs.At(num, 0) > highest {
+				best = num
+				highest = outputs.At(num, 0)
+			}
+		}
+		if y_test[i][best] == 1 {
+			score++
 		}
 	}
-	if y_test[101][best] == 1 {
-		score++
-	}
-	fmt.Println(best)
-	fmt.Println(y_test[101])
-	fmt.Println("score is ", score)
+	fmt.Println("The number of test case:")
+	fmt.Println("score is:", score)
+	total := len(X_test)
+	accuracy := float64(score) / float64(total)
+	fmt.Println("accuracy is:", accuracy)
 }
