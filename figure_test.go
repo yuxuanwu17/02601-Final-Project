@@ -35,8 +35,9 @@ func TestDataPartition(t *testing.T) {
 
 func TestImageTrain(t *testing.T) {
 	X, Y := ReadMultipleFiles("ass2_processed_data")
+	X_train, _, y_train, _ := DataPartition(X, Y, 0.80)
 	net := CreateNetwork(1152, 200, 24, 0.1)
-	ImageTrain(&net, X, Y)
+	ImageTrain(&net, X_train, y_train)
 	save(net)
 }
 
@@ -44,7 +45,7 @@ func TestImagePredict(t *testing.T) {
 	X, Y := ReadMultipleFiles("ass2_processed_data")
 	net := CreateNetwork(1152, 200, 24, 0.1)
 	load(&net)
-	ImagePredict(&net, X)
-	fmt.Println(Y[101])
+	ImagePredict(&net, X, Y)
+	//fmt.Println(Y[101])
 
 }
