@@ -77,3 +77,12 @@ func (net *Network) BackPropagation(outputError, hiddenError, finalOutputMat, hi
 
 	net.hiddenWeights = add(net.hiddenWeights, scale(net.lr, deltaWeights_hidden)).(*mat.Dense)
 }
+
+func (net Network) Predict(input []float64) mat.Matrix {
+	inputMat := mat.NewDense(len(input), 1, input)
+	hiddenInputMat := dot(net.hiddenWeights, inputMat)
+	hiddenOutputMat := applySigmoid(sigmoid, hiddenInputMat)
+	finalInputMat := dot(net.outputWeights, hiddenOutputMat)
+	finalOutputMat := applySigmoid(sigmoid, finalInputMat)
+	return finalOutputMat
+}
