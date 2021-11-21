@@ -8,10 +8,7 @@ import (
 	"strings"
 )
 
-/*
-Read the single file and transform to [][]float64 pixel and normalize to it in [0-1]
-*/
-
+// ReadSingleFile Read the single file and transform to [][]float64 pixel and normalize to it in [0-1]
 func ReadSingleFile(fileDir string) []float64 {
 	f, err := os.Open(fileDir)
 	if err != nil {
@@ -28,11 +25,7 @@ func ReadSingleFile(fileDir string) []float64 {
 	return pixels
 }
 
-/*
-Input: folder direction
-Output: X [][][]float64, Y []string
-*/
-
+// ReadMultipleFiles would receive the fold direction and output the X data and y labels
 func ReadMultipleFiles(folderDir string) ([][]float64, [][]float64) {
 	files, _ := ioutil.ReadDir(folderDir)
 	X := make([][]float64, 0)
@@ -47,10 +40,7 @@ func ReadMultipleFiles(folderDir string) ([][]float64, [][]float64) {
 	return X, Y
 }
 
-/*
-obtain the label from given file name
-*/
-
+// OneHotEncoding would obtain the label from given file name
 func OneHotEncoding(char string) []float64 {
 	singleLabel := make([]float64, 24)
 	if char == "A" {
@@ -130,10 +120,7 @@ func OneHotEncoding(char string) []float64 {
 	return singleLabel
 }
 
-/*
-image convert to the grey image and normalize the image by dividing 255
-*/
-
+// imgToGrey image convert to the grey image and normalize the image by dividing 255
 func imgToGrey(img image.Image) []float64 {
 	bounds := img.Bounds()
 	gray := image.NewGray(bounds)
@@ -153,6 +140,7 @@ func imgToGrey(img image.Image) []float64 {
 	return pixels
 }
 
+// TokenToLabel would accept the index output during prediction and convert to the string format
 func TokenToLabel(input int) string {
 	dict := make(map[int]string, 24)
 	alphabet := []string{"A", "B", "C", "D", "E", "F", "G", "H", "J", "K",
@@ -163,6 +151,7 @@ func TokenToLabel(input int) string {
 	return dict[input]
 }
 
+// ObtainLabelFromString would obtain the actual label from input direction
 func ObtainLabelFromString(inputString string) string {
 	s := strings.Split(inputString, "/")
 	return s[1][:1]

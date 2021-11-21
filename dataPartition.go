@@ -5,10 +5,7 @@ import (
 	"time"
 )
 
-/*
-This would separate the X and Y value into training (80%) and testing data (20%)
-*/
-
+// DataPartition would separate the X and Y value into training (80%) and testing data (20%)
 func DataPartition(X [][]float64, Y [][]float64, ratio float64) ([][]float64, [][]float64, [][]float64, [][]float64) {
 
 	allDataNum := len(X)

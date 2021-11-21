@@ -29,6 +29,7 @@ func CreateNetwork(input, hidden, output int, lr float64) Network {
 	return net
 }
 
+// Train the neuron network given the input and target data
 func (net *Network) Train(input []float64, target []float64) {
 	// feedforward network
 	finalOutputMat, hiddenOutputMat, inputMat := net.FeedForward(input)
@@ -58,6 +59,7 @@ func (net *Network) ErrorCalculation(finalOutputMat mat.Matrix, target []float64
 	return outputError, hiddenError
 }
 
+// BackPropagation would conduct the backpropagation during the network
 func (net *Network) BackPropagation(outputError, hiddenError, finalOutputMat, hiddenOutputMat, inputMat mat.Matrix) {
 	// part 1: the target matrix - output matrix
 	// outputError
@@ -78,8 +80,9 @@ func (net *Network) BackPropagation(outputError, hiddenError, finalOutputMat, hi
 	net.hiddenWeights = add(net.hiddenWeights, scale(net.lr, deltaWeights_hidden)).(*mat.Dense)
 }
 
+// Predict the input given input data, 1D array
 func (net Network) Predict(input []float64) mat.Matrix {
-	inputMat := mat.NewDense(len(input), 1, input)
+	inputMat := mat.NewDense(len(input), 1, input) // convert the input to vector format
 	hiddenInputMat := dot(net.hiddenWeights, inputMat)
 	hiddenOutputMat := applySigmoid(sigmoid, hiddenInputMat)
 	finalInputMat := dot(net.outputWeights, hiddenOutputMat)

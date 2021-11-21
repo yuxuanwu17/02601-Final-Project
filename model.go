@@ -2,6 +2,7 @@ package main
 
 import "os"
 
+// save method would save the hidden and output weight of the model and save in binary format
 func save(net Network) {
 	h, err := os.Create("model/hiddenWeights.model")
 	defer h.Close()

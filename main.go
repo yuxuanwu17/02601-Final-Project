@@ -5,8 +5,6 @@ import (
 	"fmt"
 )
 
-// TODO 完成main函数的构造和选择，支持命令行操作
-
 func main() {
 	// X size is 2400*1152, Y size is 2400*24
 	X, Y := ReadMultipleFiles("ass2_processed_data")
@@ -33,8 +31,8 @@ func main() {
 	if *file != "" {
 		fig := ReadSingleFile(*file)
 		load(&net)
-		fmt.Println("prediction:", TokenToLabel(SingleImagePredict(&net, fig)))
-		fmt.Println("The input file is:", ObtainLabelFromString(*file))
+		fmt.Println("The predicted label is:", TokenToLabel(SingleImagePredict(&net, fig)))
+		fmt.Println("The input image label is:", ObtainLabelFromString(*file))
 	}
 
 }
