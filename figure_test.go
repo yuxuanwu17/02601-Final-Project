@@ -49,3 +49,11 @@ func TestImagePredict(t *testing.T) {
 	ImagePredict(&net, X_test, y_test)
 	//fmt.Println(Y[101])
 }
+
+func TestToken2Label(t *testing.T) {
+	fmt.Println(TokenToLabel(2))
+}
+
+func TestObtainLabelFromString(t *testing.T) {
+	ObtainLabelFromString("ass2_processed_data/Z1.jpeg")
+}

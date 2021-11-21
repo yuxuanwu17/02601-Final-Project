@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"gonum.org/v1/gonum/mat"
 	"math"
 	"math/rand"
@@ -79,4 +80,10 @@ func sigmoidDerivative(m mat.Matrix) mat.Matrix {
 	}
 	ones := mat.NewDense(rows, 1, o)
 	return multiply(m, subtract(ones, m)) // m * (1 - m)
+}
+
+// pretty print a Gonum matrix
+func matrixPrint(X mat.Matrix) {
+	fa := mat.Formatted(X, mat.Prefix(""), mat.Squeeze())
+	fmt.Printf("%v\n", fa)
 }

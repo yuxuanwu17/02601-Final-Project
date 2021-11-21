@@ -35,3 +35,17 @@ func ImagePredict(net *Network, X_test, y_test [][]float64) {
 	accuracy := float64(score) / float64(total)
 	fmt.Println("accuracy is:", accuracy)
 }
+
+func SingleImagePredict(net *Network, fig []float64) int {
+	outputs := net.Predict(fig)
+	best := 0
+	highest := 0.0
+	matrixPrint(outputs)
+	for num := 0; num < net.outputs; num++ {
+		if outputs.At(num, 0) > highest {
+			best = num
+			highest = outputs.At(num, 0)
+		}
+	}
+	return best
+}

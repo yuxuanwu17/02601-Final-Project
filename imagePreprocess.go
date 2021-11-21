@@ -5,6 +5,7 @@ import (
 	"image/jpeg"
 	"io/ioutil"
 	"os"
+	"strings"
 )
 
 /*
@@ -150,4 +151,19 @@ func imgToGrey(img image.Image) []float64 {
 		pixels[i] = float64(gray.Pix[i]) / 255.0
 	}
 	return pixels
+}
+
+func TokenToLabel(input int) string {
+	dict := make(map[int]string, 24)
+	alphabet := []string{"A", "B", "C", "D", "E", "F", "G", "H", "J", "K",
+		"L", "M", "N", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"}
+	for i := 0; i < 24; i++ {
+		dict[i] = alphabet[i]
+	}
+	return dict[input]
+}
+
+func ObtainLabelFromString(inputString string) string {
+	s := strings.Split(inputString, "/")
+	return s[1][:1]
 }
