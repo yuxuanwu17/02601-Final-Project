@@ -1,59 +1,33 @@
 package main
 
+import (
+	"flag"
+	"fmt"
+)
+
 // TODO 完成main函数的构造和选择，支持命令行操作
-//func main() {
-//	// set the random seed to 0
-//	rand.Seed(0)
-//
-//	// create the XOR representation patter to train the network
-//	/*
-//		X's size is 2400*1152
-//		Y's size is 2400*24
-//	*/
-//
-//	_, Y := ReadMultipleFiles("ass2_processed_data")
-//	fmt.Println(Y)
-//	fmt.Println(len(Y))
-//	fmt.Println(len(Y[0]))
-//	//DataPartition(X, Y, 0.99)
-//	//inputTrain, _, _, _, _, _ := DataPartition(X, Y, 0.99)
-//	//_, _, _, x_test, _, y_test := DataPartition(X, Y, 0.99)
-//
-//}
 
-/*
-这一部分是给最后读取python保存好的文件的
-*/
-//func main() {
-//	model := tg.LoadModel("model/test", []string{"serve"}, nil)
-//
-//	fakeInput, _ := tf.NewTensor([1][1][1920]float64{})
-//	results := model.Exec([]tf.Output{
-//		model.Op("StatefulPartitionedCall", 0),
-//	}, map[tf.Output]*tf.Tensor{
-//		model.Op("serving_default_inputs_input", 0): fakeInput,
-//	})
-//	fmt.Println(results)
-//	//fmt.Println(model)
-//	//OneHotEncoding("G")
-//}
+func main() {
+	// X size is 2400*1152, Y size is 2400*24
+	X, Y := ReadMultipleFiles("ass2_processed_data")
+	X_train, X_test, y_train, y_test := DataPartition(X, Y, 0.80)
+	net := CreateNetwork(1152, 200, 24, 0.1)
+	option := flag.String("option", "", "Select train/predict to train or predict the neural network")
+	//file := flag.String("file", "ass2_processed_data/A1.jpeg", "File name of any PNG file in the ass2_processed_data")
 
-/*
-test the successful install of the golang tensorflow
-*/
-//func main() {
-//	root := tg.NewRoot()
-//	A := tg.NewTensor(root, tg.Const(root, [2][2]int32{{1, 2}, {-1, -2}}))
-//	x := tg.NewTensor(root, tg.Const(root, [2][1]int64{{10}, {100}}))
-//	b := tg.NewTensor(root, tg.Const(root, [2][1]int32{{-10}, {10}}))
-//	Y := A.MatMul(x.Output).Add(b.Output)
-//	// Please note that Y is just a pointer to A!
-//
-//	// If we want to create a different node in the graph, we have to clone Y
-//	// or equivalently A
-//	Z := A.Clone()
-//	results := tg.Exec(root, []tf.Output{Y.Output, Z.Output}, nil, &tf.SessionOptions{})
-//	fmt.Println("Y: ", results[0].Value(), "Z: ", results[1].Value())
-//	fmt.Println("Y == A", Y == A) // ==> true
-//	fmt.Println("Z == A", Z == A) // ==> false
-//}
+	flag.Parse()
+	switch *option {
+	case "train":
+		fmt.Println("You are ready to train the model")
+		ImageTrain(&net, X_train, y_train)
+		save(net)
+	case "predict":
+		fmt.Println("You are going to predict the model based on the input file")
+		load(&net)
+		ImagePredict(&net, X_test, y_test)
+
+	case "":
+		fmt.Println("Please select one option, you can use -help for more details")
+	}
+
+}

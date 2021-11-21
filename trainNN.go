@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func ImageTrain(net *Network, X, Y [][]float64) {
 	for epoch := 0; epoch < 5; epoch++ {
