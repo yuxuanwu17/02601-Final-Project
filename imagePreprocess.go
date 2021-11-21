@@ -145,7 +145,7 @@ func imgToGrey(img image.Image) []float64 {
 	}
 	// make a pixel array
 	pixels := make([]float64, len(gray.Pix))
-	// populate the pixel array and divide by 255 to normalize the data (pixels[i] = (float64(255-gray.Pix[i]) / 255.0 * 0.99) + 0.01)
+	// populate the pixel array and divide by 255 to normalize the data
 	for i := 0; i < len(gray.Pix); i++ {
 		pixels[i] = float64(gray.Pix[i]) / 255.0
 	}

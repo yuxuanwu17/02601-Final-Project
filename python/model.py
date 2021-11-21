@@ -114,7 +114,7 @@ def onehotEncoding(char):
 
     return y
 
-
+# TODO 改变一下模型，改成可以用CNN来运行的情况，照着tfCNN改，试试看能不能倒入进去
 def get_model():
     #  regression model, cannot use accuracy as the matrix
     #  input shape: 1*1152 , x_train[1920,1152]

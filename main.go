@@ -1,5 +1,6 @@
 package main
 
+// TODO 完成main函数的构造和选择，支持命令行操作
 //func main() {
 //	// set the random seed to 0
 //	rand.Seed(0)

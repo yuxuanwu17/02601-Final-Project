@@ -48,5 +48,4 @@ func TestImagePredict(t *testing.T) {
 	load(&net)
 	ImagePredict(&net, X_test, y_test)
 	//fmt.Println(Y[101])
-
 }

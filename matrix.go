@@ -15,6 +15,7 @@ func dot(a, b mat.Matrix) mat.Matrix {
 	return &c
 }
 
+// subtract function is to subtract the element between two matrix
 func subtract(a, b mat.Matrix) mat.Matrix {
 	var c mat.Dense
 	c.Sub(a, b)
@@ -47,6 +48,7 @@ func sigmoid(r, c int, x float64) float64 {
 	return 1.0 / (1 + math.Exp(-1*x))
 }
 
+// multiply is to conduct the element wise multiplication between two matrix
 func multiply(m, n mat.Matrix) mat.Matrix {
 	r, c := m.Dims()
 	o := mat.NewDense(r, c, nil)

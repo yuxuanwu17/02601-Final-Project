@@ -27,7 +27,7 @@ func ImagePredict(net *Network, X_test, y_test [][]float64) {
 			score++
 		}
 	}
-	fmt.Println("The number of test case:")
+	fmt.Println("The number of test case:", len(X_test))
 	fmt.Println("score is:", score)
 	total := len(X_test)
 	accuracy := float64(score) / float64(total)
