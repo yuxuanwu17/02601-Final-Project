@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"image"
 	"image/jpeg"
+	"image/png"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -167,4 +169,23 @@ func ObtainIndexFromArray(input []float64) string {
 		}
 	}
 	return ""
+}
+
+func ImageToPNG(finalImage image.Gray, filename string) {
+	outputFile, err := os.Create(filename + ".png")
+	if err != nil {
+		fmt.Println("Sorry: couldn't create the file!")
+		os.Exit(1)
+	}
+	defer outputFile.Close()
+
+	err = png.Encode(outputFile, &finalImage)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+}
+
+func Mtx2Pixel(input []float64) {
+
 }

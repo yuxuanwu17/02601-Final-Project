@@ -2,7 +2,10 @@ package main
 
 import (
 	"fmt"
+	"image"
+	"image/jpeg"
 	"math/rand"
+	"os"
 	"testing"
 )
 
@@ -63,4 +66,47 @@ func TestObtainIndexFromArray(t *testing.T) {
 	dict[2] = 1
 	fmt.Println(dict)
 	fmt.Println(ObtainIndexFromArray(dict))
+}
+
+func TestMtx2Pixel(t *testing.T) {
+	// X size is 2400*1152, Y size is 2400*24
+	// each image is 24*48
+	fileDir := "data/A1.jpeg"
+	f, err := os.Open(fileDir)
+	if err != nil {
+		panic(err)
+	}
+
+	// decode the figure
+	img, err := jpeg.Decode(f)
+	fmt.Println("img is: ", img)
+	test := ReadSingleFile(fileDir)
+	//fmt.Println(test)
+	byteList := make([]byte, 1152)
+	for i := 0; i < len(test); i++ {
+		pixels := test[i] * 255
+		convert2Byte := byte(pixels)
+		byteList[i] = convert2Byte
+	}
+
+	fmt.Println(byteList)
+
+	var preparedImage image.Gray
+	preparedImage.Stride = 24
+	rect := image.Rect(0, 0, 24, 48)
+	preparedImage.Rect = rect
+	preparedImage.Pix = byteList
+
+	fmt.Println(&preparedImage)
+	ImageToPNG(preparedImage, "test")
+	//fmt.Println(test)
+}
+
+func TestInt2UTF(t *testing.T) {
+	floatNum := float64(2)
+	fmt.Println(floatNum)
+	byteFormat := byte(floatNum)
+	floatNum += 1
+
+	fmt.Println(byteFormat)
 }
