@@ -32,12 +32,7 @@ func main() {
 		load(&net)
 		ImagePredict(&net, X_test, y_test)
 
-	case "":
-		//fmt.Println("Please select one option, you can use -help for more details")
-	}
-
-	if *file != "" {
-		//webHandler()
+	case "singleImagePred":
 		fig := ReadSingleFile(*file)
 		load(&net)
 		fmt.Println("The predicted label is:", TokenToLabel(SingleImagePredict(&net, fig)))
