@@ -31,6 +31,9 @@ func ReadMultipleFiles(folderDir string) ([][]float64, [][]float64) {
 	X := make([][]float64, 0)
 	Y := make([][]float64, 0)
 	for _, f := range files {
+		if f.Name() == ".DS_Store" {
+			continue
+		}
 		char := f.Name()[:1]
 		y := OneHotEncoding(char)
 		Y = append(Y, y)

@@ -16,7 +16,7 @@ func TestReadMultipleFiles(t *testing.T) {
 		Y's size is 2400*24
 	*/
 
-	X, Y := ReadMultipleFiles("ass2_processed_data")
+	X, Y := ReadMultipleFiles("data")
 	fmt.Println(Y[0])
 	fmt.Println(len(Y))
 	fmt.Println(len(X))

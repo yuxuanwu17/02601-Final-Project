@@ -1,30 +1,32 @@
-import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
-import numpy as np
 import os
 
+import matplotlib.image as mpimg
+import matplotlib.pyplot as plt
+import numpy as np
 import sklearn
-from numpy import argmax
-from sklearn.metrics import ConfusionMatrixDisplay, confusion_matrix
-from sklearn.model_selection import train_test_split
 import tensorflow as tf
+from numpy import argmax
+from sklearn.metrics import ConfusionMatrixDisplay
+from sklearn.model_selection import train_test_split
 from tensorflow import keras
 from tensorflow.keras.models import Sequential
-from tensorflow_core.python.keras.layers import Dense, Activation
+from tensorflow_core.python.keras.layers import Dense
 
 data = []
 target = []
 
 
 def readSingleImg(dir):
-    img = mpimg.imread('ass2_processed_data/' + dir)
+    img = mpimg.imread('../data/' + dir)
     img = img / 255
     return img
 
 
 def readMultipleFile():
-    files = os.listdir('../ass2_processed_data')
+    files = os.listdir('../data')
     for f in files:
+        if f == ".DS_Store":
+            continue
         img = readSingleImg(f)
         label = labelExtraction(f)
         rows, cols = img.shape
@@ -114,6 +116,7 @@ def onehotEncoding(char):
 
     return y
 
+
 def get_model():
     #  regression model, cannot use accuracy as the matrix
     model = Sequential([
@@ -147,26 +150,24 @@ def vec2ind(vec):
 
 def train(x_train, y_train):
     model = get_model()
-    tf.saved_model.save(model, "../model/mymodel")
     model.fit(x_train, y_train, epochs=5)
-    # tf.saved_model.save(model, "model/mymodel")
+    tf.saved_model.save(model, "../model/my_model")
     # model.save('model/my_model')
-    _, test_loss = model.evaluate(x_test, y_test)
 
 
 def load_model():
-    model = keras.models.load_model("model/my_model")
+    model = keras.models.load_model("../model/my_model")
     model.summary()
     y_pred = model.predict(x_test)
 
     pred_class = np.argmax(y_pred, axis=1)
     y_class = np.argmax(y_test, axis=1)
 
-    confusion_matrix = sklearn.metrics.confusion_matrix(y_true=y_class, y_pred=pred_class)  # shape=(12, 12)
+    confusion_matrix = sklearn.metrics.confusion_matrix(y_true=y_class, y_pred=pred_class)
     disp = ConfusionMatrixDisplay(confusion_matrix=confusion_matrix)
     disp.plot()
-    plt.savefig('plot/python_cm.png')
-    plt.show()
+    plt.savefig('../plot/python_cm.png')
+    # plt.show()
     print(confusion_matrix)
 
 
@@ -177,4 +178,9 @@ if __name__ == '__main__':
     x_train, x_test, y_train, y_test = train_test_split(X, Y, test_size=0.2)
     y_train = ind2vec(y_train, 24)
     y_test = ind2vec(y_test, 24)
+    # print(x_train.shape)
+    # print(x_test.shape)
+    # print(y_train.shape)
+    # print(y_test[0])
+    train(x_train, y_train)
     load_model()

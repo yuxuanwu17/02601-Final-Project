@@ -6,7 +6,7 @@ import (
 
 // ImageTrain would train the input data and epoch would specify the round of training
 func ImageTrain(net *Network, X, Y [][]float64) {
-	for epoch := 0; epoch < 5; epoch++ {
+	for epoch := 0; epoch < 20; epoch++ {
 		// iterate first 10 picture
 		for i := 0; i < len(Y); i++ {
 			net.Train(X[i], Y[i])
