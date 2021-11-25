@@ -186,6 +186,18 @@ func ImageToPNG(finalImage image.Gray, filename string) {
 
 }
 
-func Mtx2Pixel(input []float64) {
+func Mtx2Pixel(input []float64, label string) {
+	byteList := make([]byte, 1152)
+	for i := 0; i < len(input); i++ {
+		pixels := input[i] * 255
+		convert2Byte := byte(pixels)
+		byteList[i] = convert2Byte
+	}
+	var preparedImage image.Gray
+	preparedImage.Stride = 24
+	rect := image.Rect(0, 0, 24, 48)
+	preparedImage.Rect = rect
+	preparedImage.Pix = byteList
+	ImageToPNG(preparedImage, "plot/misclassified_label_of_"+label)
 
 }
