@@ -36,23 +36,44 @@ func Test_dot(t *testing.T) {
 	//fmt.Println(dot(a, b))
 
 }
+
 func TestSubtract(t *testing.T) {
-	a := mat.NewDense(2, 2, []float64{
-		1, 2,
-		4, 5,
+	a := mat.NewDense(3, 1, []float64{
+		1,
+		2,
+		4,
 	})
-	b := mat.NewDense(2, 2, []float64{
-		7, 8,
-		9, 10,
+	b := mat.NewDense(3, 1, []float64{
+		7,
+		9,
+		10,
 	})
-	fmt.Println(a)
-	fmt.Println(b)
-	fmt.Println(subtract(a, b))
+	matrixPrint(a)
+	matrixPrint(b)
+	matrixPrint(subtract(a, b))
 }
+
+func TestObtainMLE(t *testing.T) {
+	a := mat.NewDense(3, 1, []float64{
+		1,
+		2,
+		4,
+	})
+	b := mat.NewDense(3, 1, []float64{
+		2,
+		3,
+		7,
+	})
+	matrixPrint(a)
+	matrixPrint(b)
+	fmt.Println(obtainMSE(a, b))
+}
+
 func TestSigmoid(t *testing.T) {
 	fmt.Println(applySigmoid(sigmoid, mat.NewDense(2, 1, []float64{3, 3})))
 	fmt.Println(sigmoid(2, 1, 3))
 }
+
 func TestNetwork_FeedForward(t *testing.T) {
 	net := CreateNetwork(2, 2, 1, 0.1)
 	net.hiddenWeights = mat.NewDense(2, 2, []float64{0.0, 1.0, 0.0, 1.0})
@@ -61,6 +82,7 @@ func TestNetwork_FeedForward(t *testing.T) {
 	fc := mat.Formatted(output, mat.Prefix("    "), mat.Squeeze())
 	fmt.Printf("c = %v", fc)
 }
+
 func TestInitialWeights(t *testing.T) {
 	fmt.Println(initialWeights(10))
 }

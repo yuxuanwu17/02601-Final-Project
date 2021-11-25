@@ -89,3 +89,14 @@ func matrixPrint(X mat.Matrix) {
 	fa := mat.Formatted(X, mat.Prefix(""), mat.Squeeze())
 	fmt.Printf("%v\n", fa)
 }
+
+// Apply calculates the MSE given predicted and actual labels
+func obtainMSE(prediction, actual mat.Matrix) float64 {
+	rows, _ := prediction.Dims()
+	err := 0.0
+	for i := 0; i < rows; i++ {
+		diff := prediction.At(i, 0) - actual.At(i, 0)
+		err += math.Pow(diff, 2)
+	}
+	return err / float64(rows)
+}
