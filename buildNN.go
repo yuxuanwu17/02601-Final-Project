@@ -1,6 +1,8 @@
 package main
 
-import "gonum.org/v1/gonum/mat"
+import (
+	"gonum.org/v1/gonum/mat"
+)
 
 // Network contains the number of neurons in input layer, hidden layer and output layer
 type Network struct {
@@ -10,6 +12,7 @@ type Network struct {
 	hiddenWeights *mat.Dense
 	outputWeights *mat.Dense
 	lr            float64
+	squaredErr    float64
 }
 
 // CreateNetwork accept the dimension of each input figure 1152
@@ -55,6 +58,8 @@ func (net *Network) FeedForward(input []float64) (mat.Matrix, mat.Matrix, mat.Ma
 func (net *Network) ErrorCalculation(finalOutputMat mat.Matrix, target []float64) (mat.Matrix, mat.Matrix) {
 	targetMat := mat.NewDense(len(target), 1, target)
 	outputError := subtract(targetMat, finalOutputMat)
+	squaredErr := obtainMSE(finalOutputMat, targetMat)
+	net.squaredErr += squaredErr
 	hiddenError := dot(net.outputWeights.T(), outputError)
 	return outputError, hiddenError
 }

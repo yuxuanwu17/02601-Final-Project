@@ -10,7 +10,11 @@ func ImageTrain(net *Network, X_train, y_train [][]float64, epoch int) {
 		for i := 0; i < len(y_train); i++ {
 			net.Train(X_train[i], y_train[i])
 		}
-		fmt.Println("epoch ", num+1, " finished!")
+		fmt.Print("epoch ", num+1, " finished!  ")
+		sumError := net.squaredErr
+		numData := float64(len(y_train))
+		fmt.Println("MSE:", sumError/numData)
+		net.squaredErr = 0
 	}
 }
 

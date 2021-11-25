@@ -98,5 +98,5 @@ func obtainMSE(prediction, actual mat.Matrix) float64 {
 		diff := prediction.At(i, 0) - actual.At(i, 0)
 		err += math.Pow(diff, 2)
 	}
-	return err / float64(rows)
+	return err
 }

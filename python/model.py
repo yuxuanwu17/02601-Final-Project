@@ -150,7 +150,7 @@ def vec2ind(vec):
 
 def train(x_train, y_train):
     model = get_model()
-    model.fit(x_train, y_train, epochs=5)
+    model.fit(x_train, y_train, epochs=250)
     tf.saved_model.save(model, "../model/my_model")
     # model.save('model/my_model')
 
@@ -178,9 +178,5 @@ if __name__ == '__main__':
     x_train, x_test, y_train, y_test = train_test_split(X, Y, test_size=0.2)
     y_train = ind2vec(y_train, 24)
     y_test = ind2vec(y_test, 24)
-    # print(x_train.shape)
-    # print(x_test.shape)
-    # print(y_train.shape)
-    # print(y_test[0])
     train(x_train, y_train)
     load_model()
