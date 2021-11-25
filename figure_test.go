@@ -57,3 +57,10 @@ func TestToken2Label(t *testing.T) {
 func TestObtainLabelFromString(t *testing.T) {
 	ObtainLabelFromString("ass2_processed_data/Z1.jpeg")
 }
+
+func TestObtainIndexFromArray(t *testing.T) {
+	dict := make([]float64, 24)
+	dict[2] = 1
+	fmt.Println(dict)
+	fmt.Println(ObtainIndexFromArray(dict))
+}

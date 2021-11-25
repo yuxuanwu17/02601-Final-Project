@@ -10,8 +10,8 @@ func main() {
 	X, Y := ReadMultipleFiles("ass2_processed_data")
 	X_train, X_test, y_train, y_test := DataPartition(X, Y, 0.80)
 	net := CreateNetwork(1152, 200, 24, 0.1)
-	option := flag.String("option", "", "Select train/predict to train or predict the neural network")
-	file := flag.String("file", "ass2_processed_data/C1.jpeg", "File name of any PNG file in the ass2_processed_data")
+	option := flag.String("option", "predict", "Select train/predict to train or predict the neural network")
+	file := flag.String("file", "", "File name of any PNG file in the ass2_processed_data, e.g. ass2_processed_data/C1.jpeg")
 
 	flag.Parse()
 	switch *option {

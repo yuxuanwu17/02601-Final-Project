@@ -29,8 +29,13 @@ func ImagePredict(net *Network, X_test, y_test [][]float64) {
 		}
 		if y_test[i][best] == 1 {
 			score++
+		} else {
+			fmt.Println("===================")
+			fmt.Println("The actual label is :", ObtainIndexFromArray(y_test[i]))
+			fmt.Println("The predicted label index is :", TokenToLabel(best))
 		}
 	}
+	fmt.Println("======================Overall model analysis======================")
 	fmt.Println("The number of test case:", len(X_test))
 	fmt.Println("The number of perfect match is:", score)
 	total := len(X_test)

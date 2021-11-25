@@ -156,3 +156,12 @@ func ObtainLabelFromString(inputString string) string {
 	s := strings.Split(inputString, "/")
 	return s[1][:1]
 }
+
+func ObtainIndexFromArray(input []float64) string {
+	for i, i2 := range input {
+		if i2 == 1 {
+			return TokenToLabel(i)
+		}
+	}
+	return ""
+}
