@@ -38,7 +38,7 @@ func ImagePredict(net *Network, X_test, y_test [][]float64) {
 			fmt.Println("The actual label is :", ObtainIndexFromArray(y_test[i]))
 			fmt.Println("The predicted label index is :", TokenToLabel(best))
 			fmt.Println("The actual image is saved under the plot direction")
-			Mtx2Pixel(X_test[i], TokenToLabel(best))
+			Mtx2Pixel(X_test[i], TokenToLabel(best), ObtainIndexFromArray(y_test[i]))
 		}
 	}
 	fmt.Println("======================Overall model analysis======================")
