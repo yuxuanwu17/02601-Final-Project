@@ -3,7 +3,10 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"log"
+	"os"
+	"path"
 	"strconv"
 )
 
@@ -29,6 +32,10 @@ func main() {
 		save(net)
 	case "predict":
 		fmt.Println("You are going to predict the model based on the input file")
+		dir, _ := ioutil.ReadDir("plot")
+		for _, d := range dir {
+			os.RemoveAll(path.Join([]string{"plot", d.Name()}...))
+		}
 		load(&net)
 		ImagePredict(&net, X_test, y_test)
 
