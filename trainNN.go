@@ -2,18 +2,21 @@ package main
 
 import (
 	"fmt"
+	"time"
 )
 
 // ImageTrain would train the input data and epoch would specify the round of training
 func ImageTrain(net *Network, X_train, y_train [][]float64, epoch int) {
 	for num := 0; num < epoch; num++ {
+		now := time.Now()
 		for i := 0; i < len(y_train); i++ {
 			net.Train(X_train[i], y_train[i])
 		}
 		fmt.Print("epoch ", num+1, " finished!  ")
 		sumError := net.squaredErr
 		numData := float64(len(y_train))
-		fmt.Println("MSE:", sumError/numData)
+		fmt.Print("MSE:", sumError/numData, "  ")
+		fmt.Println("time elapsed:", time.Since(now))
 		net.squaredErr = 0
 	}
 }
@@ -38,7 +41,7 @@ func ImagePredict(net *Network, X_test, y_test [][]float64) {
 			fmt.Println("The actual label is :", ObtainIndexFromArray(y_test[i]))
 			fmt.Println("The predicted label index is :", TokenToLabel(best))
 			fmt.Println("The actual image is saved under the plot direction")
-			Mtx2Pixel(X_test[i], TokenToLabel(best))
+			Mtx2Pixel(X_test[i], TokenToLabel(best), ObtainIndexFromArray(y_test[i]))
 		}
 	}
 	fmt.Println("======================Overall model analysis======================")

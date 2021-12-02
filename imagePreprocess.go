@@ -162,6 +162,7 @@ func ObtainLabelFromString(inputString string) string {
 	return s[1][:1]
 }
 
+// ObtainIndexFromArray this would return the actual label
 func ObtainIndexFromArray(input []float64) string {
 	for i, i2 := range input {
 		if i2 == 1 {
@@ -171,6 +172,7 @@ func ObtainIndexFromArray(input []float64) string {
 	return ""
 }
 
+// ImageToPNG would transform the image.Gray file to the actual png file
 func ImageToPNG(finalImage image.Gray, filename string) {
 	outputFile, err := os.Create(filename + ".png")
 	if err != nil {
@@ -186,7 +188,9 @@ func ImageToPNG(finalImage image.Gray, filename string) {
 
 }
 
-func Mtx2Pixel(input []float64, label string) {
+// Mtx2Pixel would transform the input pixel matrix
+//convert to the image.Gray format and invoke ImageToPNG to output the misclassified file
+func Mtx2Pixel(input []float64, label, actualLabel string) {
 	byteList := make([]byte, 1152)
 	for i := 0; i < len(input); i++ {
 		pixels := input[i] * 255
@@ -198,6 +202,5 @@ func Mtx2Pixel(input []float64, label string) {
 	rect := image.Rect(0, 0, 24, 48)
 	preparedImage.Rect = rect
 	preparedImage.Pix = byteList
-	ImageToPNG(preparedImage, "plot/misclassified_label_of_"+label)
-
+	ImageToPNG(preparedImage, "plot/actualLabel_"+actualLabel+"_predictedLabel_"+label)
 }

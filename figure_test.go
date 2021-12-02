@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"image"
 	"image/jpeg"
+	"io/ioutil"
 	"math/rand"
 	"os"
+	"path"
 	"testing"
 )
 
@@ -107,6 +109,13 @@ func TestInt2UTF(t *testing.T) {
 	fmt.Println(floatNum)
 	byteFormat := byte(floatNum)
 	floatNum += 1
-
 	fmt.Println(byteFormat)
+}
+
+func TestRemoveSubDir(t *testing.T) {
+	dir, _ := ioutil.ReadDir("plot")
+	for _, d := range dir {
+		os.RemoveAll(path.Join([]string{"plot", d.Name()}...))
+	}
+
 }
