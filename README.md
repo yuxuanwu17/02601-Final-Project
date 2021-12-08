@@ -54,6 +54,8 @@ If your option is `train`, the program would automatically read all the images s
 
 The output in the terminal would output each epoch, indicating the Mean Squared Error and the time elapsed. The typical example would suggested as below:
 
+> ./finalProj4Prgram -option train -epoch 10
+
 ```
 You are ready to train the model
 The number of epochs used in the training:  5
@@ -67,6 +69,8 @@ epoch 5 finished!  MSE:0.017780493506913013  time elapsed: 4.246954852s
 
 
 If your option is `predict` , the program would also conduct the read, normalize and separate the dataset procedure as `train` option do. But in this case, the model would utilize the testing dat and load the weights stored in previous `train` process. The program would indicate the overall accuracy in the prediction of testing data.
+
+> ./finalProj4Prgram -option predict
 
 ```
 ======================Overall model analysis======================
@@ -89,6 +93,8 @@ The program would firstly deleted the existing image in `plot` directory and the
 If your option is `singleImagePred`, you have to specify the `file` option in the terminal. It would read the image directory specified by the user in `file` option and load the saved model weights to predict the single image. The default value of `file` is `data/C1.jpeg`
 
 It would output the probability of each 24 label and extract the label with highest probability to be the prediction label. It would also indicate the comparison between input label and prediction label.
+
+> ./finalProj4Prgram -option singleImagePred -file data/c1.jpeg
 
 ```
 ⎡0.00025700911604224856⎤
