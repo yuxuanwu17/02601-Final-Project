@@ -10,19 +10,25 @@ Once you unzip the file, the final name for this project would be `finalProj4Pro
 
 This directory would store all the input images, from A - Z (I,O excluded), each symbol contains 100 different figures segmented from the driver license plates. In other words, the dataset contains 2400 (24*100) figures in total. For each single image (jpeg format), the file name follows the same rule that the first character suggests the actual label and the following number indicates the index under this character
 
+> A typical image data sample A1.jpeg
+
+![A2](https://cdn.jsdelivr.net/gh/imgstore/typora/20211208085129.jpeg)
+
 
 
 ### model
 
 This directory would contain the saved version of training model information, either from Python based neural network written in TensorFlow or from the Golang based three layer neural network written from scratch. In specific, `my_model` or `mymodel` subdirectory is generated from TensorFlow, while the `hiddenWeights.model` and `outputWeights.model` are the saved binary file, recording the hidden and output layer of the neural network written from scratch in Golang. This is widely used in the prediction process, which means there is no need to train the model again, but directly load the saved model weights to conduct the prediction on test dataset.
 
+> A three-layer neuron network, with input layer, hidden layer and output layer.
 
+![img](https://cdn.jsdelivr.net/gh/imgstore/typora/20211208085344.png)
 
 ### plot
 
 This directory would contain the confusion matrix generated from Python based image classification. The other part is from the Golang based model. During the direct prediction, I would save the file into this direction where the prediction label is not matched to the actual label, the file is saved in the following format, given actual label is T and the predicted label is G, we could find that `actualLabel_T_predictedLabel_G`.
 
-
+![image-20211208085810258](https://cdn.jsdelivr.net/gh/imgstore/typora/20211208085811.png)
 
 ### python
 
@@ -116,3 +122,25 @@ The input image label is: C
 `epoch:` This would determine the number of epoch used in the training process. The default value would be set as 5 epoch
 
 `file:` This would specify the name of any single PNG file in the data direction based on the saved model weights. The default value is `data/C1.jpeg`
+
+
+
+# Poster of the project
+
+
+
+## Target
+
+Image classification has been widely applied in various areas, for instance, traffic area. In this project, I would build a neural network from scratch to classify the segmented character. 
+
+
+
+## Motivation
+
+I used to apply machine learning and deep learning algorithm in Python during my undergraduate research in bioinformatics lab, however, we normally simply utilized the existing libraries or packages' API to train and predict the model and functioned like a "black box". Therefore, in this project, I would like to build a neural network from scratch, which could help me strengthen the understanding in neural network
+
+
+
+## Future extensions
+
+With the assistance of front-end knowledge, it is possible to assemble the current neural network model and implement it in the real life. Also, I was not unable to implement TensorFlow in golang, which is also possible to do in the future. Furthermore, the existing model is a naive three layer neural network with weights, it is possible to add more hyper parameters to tune in the future.
